@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.ma.core import arcsin
 
 # angulos registrados experimentalmente
 alpha_deg = np.array([10.0, 20.0, 30.0, 40.0, 50.0])
@@ -45,19 +46,29 @@ chi2_red = chi2 / (len(sin_beta) - 1)
 
 # correccion
 sigma_m *= np.sqrt(chi2_red)
+
+#obtenemos el angulo critico
+angulo_critico = arcsin(1/m)
+sigma_angulo = (1 / (m**2 * np.sqrt(1 - 1/m**2))) * sigma_m
+
+#convirtiendo a grados sexagesimales
+angulo_critico = np.degrees(angulo_critico)
+sigma_angulo = np.degrees(sigma_angulo)
+
 print(sin_alpha, sigma_sin_alpha)
 print(sin_beta, sigma_sin_beta)
+print(f"Ángulo critico: ({angulo_critico:.1f} ± {sigma_angulo:.1f}) °")
 print(f"n = {m:.3f} ± {sigma_m:.3f}")
 
 # --- Grafica ------------------------------------------------------
 
 plt.figure(figsize=(6,5))
 
-factor = 20
+factor = 5
 
 plt.errorbar(sin_beta, sin_alpha,
              yerr=factor*sigma_sin_alpha,
-             fmt='o', capsize=4, label='Datos (errores escalados)')
+             fmt='o', capsize=5, label='Datos (errores escalados)')
 
 # etiquetas con 3 cifras significativas
 for xi, yi in zip(sin_beta, sin_alpha):
@@ -67,6 +78,8 @@ for xi, yi in zip(sin_beta, sin_alpha):
 x_fit = np.linspace(min(sin_beta), max(sin_beta), 100)
 y_fit = m * x_fit
 plt.plot(x_fit, y_fit, label=f'Ajuste: n = {m:.4g} ± {sigma_m:.2g}')
+
+
 
 # etiquetas
 plt.xlabel('sin(beta)')
