@@ -6,7 +6,7 @@ alpha_deg = np.array([10.0, 20.0, 30.0, 40.0, 50.0])
 beta_deg  = np.array([6.0, 13.0, 19.0, 25.0, 31.0])
 
 # incertidumbre angular
-incertidumbre_angular_deg = 0.1
+incertidumbre_angular_deg = 0.5
 
 # conversión a radianes
 alpha = np.deg2rad(alpha_deg)
